@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Meeting Timer</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    @keyframes timer {
+        0% {background-color: green;}
+        50% {background-color: yellow;}
+        100% {background-color: red;}
+    }
+
+    #diver {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        background-color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 10vw;
+        font-family: sans-serif;
+    }
+
+    .animate {
+        animation-name: timer;
+        animation-duration: 60s;
+        animation-timing-function: linear;
+    }
+  </style>
+</head>
+<body>
+    <div id="diver">
+        Start Timer
+    </div>
+    <script>
+        const clickdiv = document.getElementById("diver");
+        function timer(event) {
+            clickdiv.classList.toggle('animate');
+            if (clickdiv.innerHTML.trim() == "") {
+                clickdiv.innerHTML = "Start Timer"
+            }
+            else {
+                clickdiv.innerHTML = ""
+            }
+        };
+        clickdiv.addEventListener("animationend", () => {
+            clickdiv.classList.toggle('animate');
+            clickdiv.innerHTML = 'Start Timer'
+        });
+        clickdiv.addEventListener("click",timer);
+      </script>
+</body>
+</html>
