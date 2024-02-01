@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,11 +6,27 @@
   <title>Meeting Timer</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <style>
+  :root {
+  --durat: 60s;
+  }
     @keyframes timer {
         0% {background-color: green;}
         50% {background-color: yellow;}
         100% {background-color: red;}
     }
+	
+	#sub {
+		align-items: center;
+        font-size: 5vw;
+        font-family: sans-serif;
+		pointer-events: auto;
+		margin-bottom: 25px;
+	
+	}
+	
+	input {
+		pointer-events: auto;
+	}
 
     #diver {
         position: relative;
@@ -19,37 +36,64 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: 10vw;
         font-family: sans-serif;
+		flex-direction: column;
     }
 
     .animate {
         animation-name: timer;
-        animation-duration: 60s;
+        animation-duration: var(--durat,"60s");
         animation-timing-function: linear;
     }
   </style>
 </head>
 <body>
     <div id="diver">
-        Start Timer
+		<button id="sub">Start Timer</button>
+		<div id="numberset">
+		<label>
+		Input the number of seconds:
+			<input id="secs" type="number" value=60>
+		</label>
+		</div>
     </div>
     <script>
         const clickdiv = document.getElementById("diver");
+		const startbutton = document.getElementById("sub");
+		const numberset = document.getElementById("numberset")
+		const secs = document.getElementById("secs")
         function timer(event) {
-            clickdiv.classList.toggle('animate');
-            if (clickdiv.innerHTML.trim() == "") {
-                clickdiv.innerHTML = "Start Timer"
-            }
-            else {
-                clickdiv.innerHTML = ""
+            if (clickdiv.className == 'animate') {
+                numberset.style.visibility = "visible";
+				clickdiv.classList.toggle('animate');
+				startbutton.innerText = "Start Timer";
+			}
+            else if (startbutton.innerText == "Reset") {
+				startbutton.innerText = "Start Timer"
+				clickdiv.style.backgroundColor = 'white';
+				numberset.style.visibility = "visible";
+			}
+			
+			else {
+                numberset.style.visibility = "hidden";
+				startbutton.innerText = "End Timer";
+				let root = document.documentElement;
+				if (secs.value.toString() == "") {
+					clickdiv.classList.toggle('animate');
+				}
+				else {
+				root.style.setProperty("--durat",secs.value.toString()+"s");
+				clickdiv.classList.toggle('animate');
+				}
             }
         };
         clickdiv.addEventListener("animationend", () => {
-            clickdiv.classList.toggle('animate');
-            clickdiv.innerHTML = 'Start Timer'
+            startbutton.innerText = "Reset"
+			clickdiv.classList.toggle('animate');
+            clickdiv.style.backgroundColor = 'black';
+			numberset.style.visibility = "hidden";
         });
-        clickdiv.addEventListener("click",timer);
+        startbutton.addEventListener("click",timer);
       </script>
 </body>
 </html>
